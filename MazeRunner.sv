@@ -68,7 +68,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   ///////////////////////////////////////////////////////////////////
   // Instantiate cmd_proc block to receive & process command byte //
   /////////////////////////////////////////////////////////////////
-  cmd_proc iCMDPROC(.clk(clk), .rst_n(rst_n), .BMPL_n(BMPL_n), BMPR_n(BMPR_n), .go(go), .err_opn_lp(err_opn_lp), .line_present(line_present), .buzz(buzz), .RX(RX));
+  cmd_proc iCMDPROC(.clk(clk), .rst_n(rst_n), .BMPL_n(BMPL_n), .BMPR_n(BMPR_n), .go(go), .err_opn_lp(err_opn_lp), .line_present(line_present), .buzz(buzz), .RX(RX));
 						
   ////////////////////////////////////////////////////////////
   // To increase volume of buzzer we drive it differential //
