@@ -1,7 +1,8 @@
 module cmd_proc(clk,rst_n,BMPL_n,BMPR_n,go,err_opn_lp,line_present,buzz,RX);
 
 input clk,rst_n,BMPL_n,BMPR_n,RX,line_present;
-output go,buzz;
+output logic go;
+output logic buzz;
 output reg [15:0] err_opn_lp;
 
 logic last_veer_right, nxt_cmd, cmd_rdy, cap_cmd, rst_tmr;
@@ -39,7 +40,7 @@ always_ff @(posedge clk) begin
 		tmr = tmr + 1;
 end 
 
-typedef enum reg [2:0] { IDLE, READY, CLR_GO, ASSERT_ERR_OPN_LP_1,ASSERT_ERR_OPN_LP_2, RST_ERR_OPN_LP, ASSERT_LFT_RGHT_ERR,BUZZ_100MS, BUZZ, REGULAR_VEER} state_t;
+typedef enum reg [3:0] { IDLE, READY, CLR_GO, ASSERT_ERR_OPN_LP_1,ASSERT_ERR_OPN_LP_2, RST_ERR_OPN_LP, ASSERT_LFT_RGHT_ERR,BUZZ_100MS, BUZZ, REGULAR_VEER} state_t;
 state_t state, next_state;
 
   // SM flop
