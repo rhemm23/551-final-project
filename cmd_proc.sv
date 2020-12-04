@@ -10,6 +10,9 @@ logic [1:0] cmd_reg;
 logic [15:0] cmd_shft_reg;
 logic [25:0] tmr;
 logic REV_tmr1, REV_tmr2, BMP_DBNC_tmr;
+logic shft;
+
+parameter FAST_SIM = 0;
 
 UART_wrapper UART(.cmd(cmd), .cmd_rdy(cmd_rdy), .clr_cmd_rdy(cap_cmd), .RX(RX), .clk(clk), .rst_n(rst_n));
 
