@@ -1,63 +1,55 @@
-module err_compute_SM(clk, rst_n, IR_vld, sel, clr_accum, en_accum, err_vld);
+module err_compute_SM(sel, clr_accum, en_accum, err_vld, IR_vld, clk, rst_n);
 
-  input clk, rst_n, IR_vld;
-  
-  output logic en_accum, err_vld;
-  output logic [2:0] sel;
-  output clr_accum;
-  
-  reg [3:0] sel_cnt;
-  
-  logic init;
+    output logic [2:0] sel;
+    output logic clr_accum;
+    output logic en_accum;
+    output logic err_vld;
+    input logic IR_vld;
+    input logic clk, rst_n;
 
-  typedef enum reg [1:0] { IDLE, SEL } state_t;
-  state_t state, next_state;
-  
-  // State flop
-  always_ff @(posedge clk, negedge rst_n)
-    if (!rst_n)
-      state <= IDLE;
-    else
-      state <= next_state;
-      
-  // Select counter
-  always_ff @(posedge clk)
-    if (init)
-      sel_cnt <= 4'h0;
-    else if (en_accum)
-      sel_cnt <= sel_cnt + 1;
+    logic [3:0] real_sel;
 
-  // SM logic
-  always_comb begin
-    // Clear SM outputs
-    sel = 3'b000;
-    en_accum = 0;
-    err_vld = 0;
-    init = 0;
+    typedef enum logic {IDLE, ACCUM} state_t;
+    state_t curr, next;
+
+    // FSM flip-flop
+    always_ff @(posedge clk, negedge rst_n) 
+        if (!rst_n)
+            curr <= IDLE;
+        else
+            curr <= next;
+
+    always_ff @(posedge clk)
+        if (clr_accum)
+            real_sel <= 0;
+        else if (en_accum)
+            real_sel <= real_sel + 1;
+
     
-    // State transitions
-    case (state)
-      ///// Select case, read the eight IR values /////
-      SEL : if (sel_cnt == 4'h8) begin
-        err_vld = 1;
-        next_state = IDLE;
-      end else begin
-        en_accum = 1;
-        sel = sel_cnt;
-        next_state = SEL;
-      end
-      ///// default case = IDLE /////
-      default : if (IR_vld) begin
-        init = 1;
-        next_state = SEL;
-      end else begin
-        next_state = IDLE;
-      end
-    endcase
-  end
-  
-  // Clear accumulator when initializing
-  assign clr_accum = init;
-  
-endmodule
+    // FSM logic 
+    always_comb begin
+        // default
+        clr_accum = 0;
+        en_accum = 0;
+        err_vld = 0;
+        next = IDLE; 
+        case (curr)
+            IDLE: if (IR_vld) begin
+                clr_accum = 1;
+                next = ACCUM;
+            end else begin
+                next = IDLE;
+            end
+            default: if (real_sel != 4'b1000) begin
+                en_accum = 1;
+                next = ACCUM;
+            end else begin
+                err_vld = 1;
+                next = IDLE;
+            end
+        endcase
+    end
 
+    assign sel = real_sel[2:0];
+    
+endmodule

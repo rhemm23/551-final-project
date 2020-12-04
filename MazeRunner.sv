@@ -63,12 +63,12 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   ////////////////////////////////
   // Instantiate error compute //
   //////////////////////////////
-  err_compute iERR(.clk(clk), .rst_n(rst_n), .IR_vld(IR_vld), .IR_R0(IR_R0), .IR_R1(IR_R1), .IR_R2(IR_R2), .IR_R3(IR_R3), .IR_L0(IR_L0), .IR_L1(IR_L1), .IR_L2(IR_L2), .IR_L3(IR_L3), .error(err_raw), .err_vld(err_vld));
+  err_compute iERR(.error(err_raw), .err_vld(err_vld), .IR_R0(IR_R0), .IR_L0(IR_L0), .IR_R1(IR_R1), .IR_L1(IR_L1), .IR_R2(IR_R2), .IR_L2(IR_L2), .IR_R3(IR_R3), .IR_L3(IR_L3), .IR_vld(IR_vld), .clk(clk), .rst_n(rst_n));
 
   ///////////////////////////////////////////////////////////////////
   // Instantiate cmd_proc block to receive & process command byte //
   /////////////////////////////////////////////////////////////////
-  <-- Instantiate your cmd_proc (Don't forget to pass FAST_SIM to it) -->
+  cmd_proc iCMDPROC(.clk(clk), .rst_n(rst_n), .BMPL_n(BMPL_n), BMPR_n(BMPR_n), .go(go), .err_opn_lp(err_opn_lp), .line_present(line_present), .buzz(buzz), .RX(RX));
 						
   ////////////////////////////////////////////////////////////
   // To increase volume of buzzer we drive it differential //
@@ -87,8 +87,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   PID #(.FAST_SIM(FAST_SIM)) iPID(.clk(clk), .rst_n(rst_n), .lft_spd(lft_spd), .rght_spd(rght_spd), .moving(moving), .error(error), .err_vld(err_vld), .go(go), .line_present(line_present));
 					 
 		   
-  assign LED = <-- there are 8 LEDs...do what you like...nothing is an option -->
+  assign LED = 0; // <-- there are 8 LEDs...do what you like...nothing is an option -->
    
-  
   
 endmodule
