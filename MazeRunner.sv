@@ -63,7 +63,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   ////////////////////////////////
   // Instantiate error compute //
   //////////////////////////////
-  err_compute iERR(.clk(clk), .rst_n(rst_n), .IR_vld(IR_vld), .IR_R0(IR_R0), .IR_R1(IR_R1), .IR_R2(IR_R2), .IR_R3(IR_R3), .IR_L0(IR_L0), .IR_L1(IR_L1), .IR_L2(IR_L2), .IR_L3(IR_L3), .error(err_raw), .err_vld(err_vld));
+  err_compute iERR(.error(err_raw), .err_vld(err_vld), .IR_R0(IR_R0), .IR_L0(IR_L0), .IR_R1(IR_R1), .IR_L1(IR_L1), .IR_R2(IR_R2), .IR_L2(IR_L2), .IR_R3(IR_R3), .IR_L3(IR_L3), .IR_vld(IR_vld), .clk(clk), .rst_n(rst_n));
 
   ///////////////////////////////////////////////////////////////////
   // Instantiate cmd_proc block to receive & process command byte //
