@@ -29,7 +29,6 @@ always_ff @(posedge clk, negedge rst_n) begin
 		last_veer_right = cmd_reg[0];
 end 
 
-// tmr not correct
 always_ff @(posedge clk) begin 
 	if(rst_tmr)
 		tmr = 0;
