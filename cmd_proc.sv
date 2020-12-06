@@ -21,7 +21,7 @@ always_ff @(posedge clk)begin
 	if(cap_cmd) begin 
 		cmd_shft_reg[15:0] = cmd[15:0];
 	end else if(shft) begin 
-		cmd_shft_reg[15:0] = {2'b0 , cmd[15:2]}; 
+		cmd_shft_reg[15:0] = {2'b0 , cmd_shft_reg[15:2]}; 
 	end 
 end 
 assign cmd_reg[1:0] = cmd_shft_reg[1:0];
@@ -33,7 +33,9 @@ always_ff @(posedge clk, negedge rst_n) begin
 		last_veer_right = cmd_reg[0];
 end 
 
-always_ff @(posedge clk) begin 
+always_ff @(posedge clk) begin
+	//if(!rst_n)
+		//tmr = 0;
 	if(rst_tmr)
 		tmr = 0;
 	else
@@ -71,7 +73,7 @@ always_comb begin
 			next_state = IDLE;
 	end 
 	
-	READY : begin 
+	READY : begin
 		cap_cmd = 0;
 		if(line_present) begin 
 			if(!BMPL_n || !BMPR_n) begin 
@@ -83,12 +85,16 @@ always_comb begin
 					next_state = READY;
 				else
 					next_state = BUZZ;
-			end else
+			end else begin
+				go = 1;
 				next_state = READY;
-		end else if(cmd[1:0] == 2'b11) begin 
-			go = 0;
+			end
+		end else if(cmd_shft_reg[1:0] == 2'b11) begin 
+			go = 1;
+			rst_tmr = 1;
 			next_state = ASSERT_ERR_OPN_LP_1;
-		end else if(|cmd[1:0]) begin 
+		end else if(|cmd_shft_reg[1:0]) begin
+			go = 1;
 			next_state = REGULAR_VEER;
 		end else begin 
 			go = 0;
@@ -96,7 +102,8 @@ always_comb begin
 		end 
 	end
 	
-	REGULAR_VEER : begin 
+	REGULAR_VEER : begin
+		go = 1;
 		if(cmd[0]) 
 			err_opn_lp = 16'h340;
 		else
@@ -110,20 +117,23 @@ always_comb begin
 	
 	ASSERT_ERR_OPN_LP_1 : begin 
 		go = 1;
-		if(last_veer_right) begin 
-			rst_tmr = 1;
+		if(!last_veer_right) begin 
+			//rst_tmr = 1;
 			if(!REV_tmr1) begin 
 				err_opn_lp = -16'h1E0;
 			end else begin 
-				go = 0;
+				go = 1;
+				rst_tmr = 1;
+				$display("%b", REV_tmr1);
 				next_state = ASSERT_ERR_OPN_LP_2;
 			end 
 		end else begin 
-			rst_tmr = 1;
+			//rst_tmr = 1;
 			if(!REV_tmr1) begin 
 				err_opn_lp = 16'h1E0;
 			end else begin 
-				go = 0;
+				go = 1;
+				rst_tmr = 1;
 				next_state = ASSERT_ERR_OPN_LP_2;
 			end 
 		end
@@ -131,15 +141,15 @@ always_comb begin
 	
 	ASSERT_ERR_OPN_LP_2 : begin 
 		go = 1;
-		if(last_veer_right) begin 
-			rst_tmr = 1;
+		if(!last_veer_right) begin 
+			//rst_tmr = 1;
 			if(!REV_tmr2) begin 
 				err_opn_lp = 16'h380;
 			end else begin 
 				next_state = RST_ERR_OPN_LP;
 			end 
 		end else begin 
-			rst_tmr = 1;
+			//rst_tmr = 1;
 			if(!REV_tmr2) begin 
 				err_opn_lp = -16'h380;
 			end else begin 
@@ -148,7 +158,8 @@ always_comb begin
 		end
 	end 
 	
-	RST_ERR_OPN_LP : begin 
+	RST_ERR_OPN_LP : begin
+		go = 1;
 		err_opn_lp = 0;
 		if(line_present) begin
 			nxt_cmd = 1;
@@ -183,7 +194,7 @@ end
  generate 
     if (FAST_SIM) begin
       assign REV_tmr1 = tmr[20:16] == 5'h0A ? 1'b1 : 1'b0;
-      assign REV_tmr2 = tmr[25:21] == 5'h10 ? 1'b1 : 1'b0;
+      assign REV_tmr2 = tmr[20:16] == 5'h10 ? 1'b1 : 1'b0;
 	  assign BMP_DBNC_tmr = &tmr[16:0];
     end else begin
       assign REV_tmr1 = tmr[20:16] == 5'h16 ? 1'b1 : 1'b0;
