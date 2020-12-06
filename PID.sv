@@ -10,9 +10,9 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 
 	parameter FAST_SIM = 0;      // Set to 1 to ramp up forward speed 8x faster (useful in ModelSim)
 
-	localparam P_coeff = 7'h00;  // Coefficient for Proportional term of PID
+	localparam P_coeff = 7'h06;  // Coefficient for Proportional term of PID
 	localparam I_coeff = 7'h00;  // Coefficient for Integral term of PID
-	localparam D_coeff = 7'h38;  // Coefficient for Derivative term of PID
+	localparam D_coeff = 7'h26;  // Coefficient for Derivative term of PID
 
 	output [11:0] lft_speed;     // Left motor speed
 	output [11:0] rght_speed;    // Right motor speed
@@ -37,7 +37,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	
 	// Sum each individual term into a PID signal
 	// Zero when go is not asserted
-	assign PID = go ? (P_term + I_term + D_term) : 15'h0000;
+	assign PID = go ? (P_term + {{5{I_term[9]}},I_term} + D_term) : 15'h0000;
 	
 	// Combinational logic for output signals
 	assign moving = (FRWRD > 11'h080) ? 1'b1 : 1'b0; // Moving if speed is above 0x080
@@ -45,7 +45,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	assign rght_speed = moving ? FRWRD_diff : {1'b0, FRWRD}; // Otherwise steer left and right based on PID output
 	
 	// Intermediate signal combinational logic
-	assign FRWRD_sum = {1'b0, FRWRD} + PID[14:3]; // Ignore lower bits in PID term to avoid small changes in error affecting output
+	assign FRWRD_sum = {1'b0, FRWRD} + PID[14:3]; // Ignore lower bits in PID term to divide effective value by 16
 	assign FRWRD_diff = {1'b0, FRWRD} - PID[14:3];
 	assign incr_en = err_vld && ~&FRWRD[9:8]; // Only increment speed when the error is valid or we are below max speed
 	
@@ -79,7 +79,10 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	wire signed [10:0] err_sat;
 
 	// Saturate error to 11 bits. If error is negative and more negative than a 11 bit value, saturate it. If error is positive and larger than a 11 bit value, saturate it.
-	assign err_sat = error[15] ? (error[13:10] == 0 ? 11'b10000000000 : error[10:0]) : (error[13:10] == 0 ? error[10:0] : 11'b01111111111);
+	//assign err_sat = error[15] ? (error[13:10] == 0 ? 11'b10000000000 : error[10:0]) : (error[13:10] == 0 ? error[10:0] : 11'b01111111111);
+	assign err_sat = (!error[15] && |error[14:10]) ? 16'h7fff :
+						(error[15] && ~&error[14:10]) ? 16'h8000 :
+						error[10:0];
 	assign P_term = $signed(P_coeff)*err_sat; // Scale error by PID's P coefficient
 
 /////////////////////////////////////////////////////////////////////
@@ -122,7 +125,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 /////////////////////////////////////////////////////////////////////
 	//  I TERM LOGIC
 	
-	logic [15:0] integrator;
+	logic signed [15:0] integrator;
 
     // inter-connected logic
     logic [15:0] ext_err_sat; // sign extended error saturation
@@ -137,7 +140,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
     assign ext_err_sat = { {5{err_sat[10]}}, err_sat[10:0] };
     assign temp_sum = integrator + ext_err_sat; // adder output
     assign res_sum = (~overflow_sel && err_vld) ? temp_sum : integrator; // first mux
-	assign I_term = integrator[15:6];
+	assign I_term = $signed(I_coeff)*integrator[15:6];
     
     // second mux is within the ff
     // ff
