@@ -26,7 +26,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   wire rst_n;		// global reset signal
   wire send_resp;	// initiate sending of response to BLE
   wire cmd_rdy;		// indicates command ready from BLE
-  wire [7:0] cmd;	// 16-bit command from BLE module
+  wire [15:0] cmd;	// 16-bit command from BLE module
   wire clr_cmd_rdy;	// knocks down cmd_rdy
   
   wire [11:0] IR_R0,IR_R1,IR_R2,IR_R3;
@@ -68,7 +68,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   ///////////////////////////////////////////////////////////////////
   // Instantiate cmd_proc block to receive & process command byte //
   /////////////////////////////////////////////////////////////////
-  cmd_proc iCMDPROC(.clk(clk), .rst_n(rst_n), .BMPL_n(BMPL_n), .BMPR_n(BMPR_n), .go(go), .err_opn_lp(err_opn_lp), .line_present(line_present), .buzz(buzz), .RX(RX));
+  cmd_proc #(FAST_SIM) iCMDPROC(.clk(clk), .rst_n(rst_n), .BMPL_n(BMPL_n), .BMPR_n(BMPR_n), .go(go), .err_opn_lp(err_opn_lp), .line_present(line_present), .buzz(buzz), .RX(RX));
 						
   ////////////////////////////////////////////////////////////
   // To increase volume of buzzer we drive it differential //
@@ -84,7 +84,7 @@ module MazeRunner(clk,RST_n,SS_n,MOSI,MISO,SCLK,PWMR,PWML,
   //////////////////////////////////////
   // Instantiate your PID controller //
   ////////////////////////////////////
-  PID #(.FAST_SIM(FAST_SIM)) iPID(.clk(clk), .rst_n(rst_n), .lft_spd(lft_spd), .rght_spd(rght_spd), .moving(moving), .error(error), .err_vld(err_vld), .go(go), .line_present(line_present));
+  PID #(.FAST_SIM(FAST_SIM)) iPID(.clk(clk), .rst_n(rst_n), .lft_speed(lft_spd), .rght_speed(rght_spd), .moving(moving), .error(error), .err_vld(err_vld), .go(go), .line_present(line_present));
 					 
 		   
   assign LED = 0; // <-- there are 8 LEDs...do what you like...nothing is an option -->
