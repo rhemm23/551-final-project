@@ -515,6 +515,8 @@ module MazeRunner_tb();
 		@(posedge clk);
 		@(negedge clk);
 		RST_n = 1;
+		BMPL_n = 1;
+		BMPR_n = 1;
 		state = STOPPED;
 		repeat(4) @(posedge clk);
 		cmd = travel_plan;

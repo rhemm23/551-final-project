@@ -58,15 +58,19 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
     if (EN_L3)
       IR_L3 <= res;
   
-  always_ff @(posedge clk)
-    if (clr_chnnl)
+  always_ff @(posedge clk, negedge rst_n)
+	if(!rst_n)
+	  chnnl <= 3'b000;
+    else if (clr_chnnl)
       chnnl <= 3'b000;
     else if (inc_chnnl)
       chnnl <= chnnl + 1;
   
   // Timer flop
-  always_ff @(posedge clk)
-    if (rst_tmr)
+  always_ff @(posedge clk, negedge rst_n)
+  	if(!rst_n)
+	  tmr <= 18'h00000;
+    else if (rst_tmr)
       tmr <= 18'h00000;
     else
       tmr <= tmr + 1;
@@ -90,7 +94,7 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
     end
   
   // IR max flop
-  always_ff @(posedge clk)
+  always_ff @(posedge cnv_cmplt, posedge clr)
     if (clr)
       IR_max <= 12'h000;
     else if (cnv_cmplt && res > IR_max)
@@ -99,6 +103,7 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
   // SM logic
   always_comb begin
     // Clear logic
+	next_state = IDLE;
     clr = 0;
     IR_en = 0;
     IR_vld = 0;
@@ -126,11 +131,9 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
       end
       // Wait for timer to fill before starting
       WAIT_TMR : if (nxt_round) begin
-        clr = 1;
         rst_tmr = 1;
         next_state = IR_SETTLE;
       end else begin
-        clr = 1;
         next_state = WAIT_TMR;
       end
       // Wait for IR sensor values to settle

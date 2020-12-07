@@ -55,6 +55,7 @@ state_t state, next_state;
 assign shft = nxt_cmd;
 	  
 always_comb begin 
+	next_state = IDLE;
 	nxt_cmd = 0;
 	cap_cmd = 0;
 	err_opn_lp = 0;

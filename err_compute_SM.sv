@@ -1,55 +1,62 @@
-module err_compute_SM(sel, clr_accum, en_accum, err_vld, IR_vld, clk, rst_n);
+module err_compute_SM(sel, err_vld, IR_vld, clr_accum, en_accum, clk, rst_n);
 
-    output logic [2:0] sel;
-    output logic clr_accum;
-    output logic en_accum;
-    output logic err_vld;
-    input logic IR_vld;
-    input logic clk, rst_n;
+	// Define our state machine states
+	typedef enum reg [1:0] {IDLE, ERR, ACCUM} state_t;
+		state_t state, nxt_state;
 
-    logic [3:0] real_sel;
 
-    typedef enum logic {IDLE, ACCUM} state_t;
-    state_t curr, next;
+	// State machine inputs and outputs
+	input IR_vld, clk, rst_n;
+	output logic err_vld, clr_accum, en_accum;
+	output logic [2:0] sel;
+	
+	logic inc_sel, clr_sel; // Internal signals for incrementing/clearing select signal counter
 
-    // FSM flip-flop
-    always_ff @(posedge clk, negedge rst_n) 
-        if (!rst_n)
-            curr <= IDLE;
-        else
-            curr <= next;
+	// State machine state flop
+	always_ff @(posedge clk, negedge rst_n)
+		if(!rst_n)
+			state <= IDLE;
+		else
+			state <= nxt_state;
+	
+	// Error select signal counter
+	// Counts which IR signal should be selected
+	always_ff @(posedge clk, negedge rst_n)
+		if(!rst_n)
+			sel <= 3'h0;
+		else if(clr_sel)
+			sel <= 3'h0;
+		else if(inc_sel)
+			sel <= sel + 1;
 
-    always_ff @(posedge clk)
-        if (clr_accum)
-            real_sel <= 0;
-        else if (en_accum)
-            real_sel <= real_sel + 1;
-
-    
-    // FSM logic 
-    always_comb begin
-        // default
-        clr_accum = 0;
-        en_accum = 0;
-        err_vld = 0;
-        next = IDLE; 
-        case (curr)
-            IDLE: if (IR_vld) begin
-                clr_accum = 1;
-                next = ACCUM;
-            end else begin
-                next = IDLE;
-            end
-            default: if (real_sel != 4'b1000) begin
-                en_accum = 1;
-                next = ACCUM;
-            end else begin
-                err_vld = 1;
-                next = IDLE;
-            end
-        endcase
-    end
-
-    assign sel = real_sel[2:0];
-    
+	// State machine next state logic	
+	always_comb begin
+		// Default our next state and outputs
+		nxt_state = IDLE;
+		err_vld = 0;
+		clr_accum = 0;
+		en_accum = 0;
+		inc_sel = 0;
+		clr_sel = 0;
+		
+		case(state)
+			IDLE: if(IR_vld) begin // Begin when IR signals are valid
+					nxt_state = ERR;
+					clr_accum = 1; // Clear the previously accumulated value
+				end
+			ERR: begin
+					nxt_state = ACCUM;
+					en_accum = 1; // Immediately enable the accumulator in this state and transition to the accum state
+				end
+			ACCUM: if(sel == 3'h7) begin // Done accumulating error once we've selected all 8 IR signals
+					nxt_state = IDLE;
+					err_vld = 1; // Assert that the error is ready
+					clr_sel = 1;
+				end else begin // Otherwise accumulate error on the next (incremented) signal
+					nxt_state = ERR;
+					inc_sel = 1; // Increment select on return to ERR to avoid off by one error
+				end
+			default: nxt_state = IDLE; // No latches
+		endcase
+	end
 endmodule
