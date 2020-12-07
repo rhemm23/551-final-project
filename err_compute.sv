@@ -14,7 +14,7 @@ module err_compute(error, err_vld, IR_R0, IR_L0, IR_R1, IR_L1, IR_R2, IR_L2, IR_
     logic en_accum;
 
     // flop output
-    logic [15:0] curr_error
+    logic [15:0] curr_error;
     logic curr_err_vld;
 
     assign sub = sel[0]; // sub is equal to sel[0]
