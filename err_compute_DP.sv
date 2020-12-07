@@ -14,13 +14,13 @@ module err_compute_DP(clk,en_accum,clr_accum,sub,sel,IR_R0,IR_R1,IR_R2,IR_R3,
   
     //  compute the error with the weight
     wire [15:0] selIR;
-    assign selIR =  (sel === 3'b000) ? ({4'h0, IR_R0}) :
-                    (sel === 3'b001) ? ({4'h0, IR_L0}) :
-                    (sel === 3'b010) ? ({3'h0, IR_R1, 1'h0}) :
-                    (sel === 3'b011) ? ({3'h0, IR_L1, 1'h0}) :
-                    (sel === 3'b100) ? ({2'h0, IR_R2, 2'h0}) :
-                    (sel === 3'b101) ? ({2'h0, IR_L2, 2'h0}) :
-                    (sel === 3'b110) ? ({1'h0, IR_R3, 3'h0}) : ({1'h0, IR_L3, 3'h0});
+    assign selIR =  (sel == 3'b000) ? ({4'h0, IR_R0}) :
+                    (sel == 3'b001) ? ({4'h0, IR_L0}) :
+                    (sel == 3'b010) ? ({3'h0, IR_R1, 1'h0}) :
+                    (sel == 3'b011) ? ({3'h0, IR_L1, 1'h0}) :
+                    (sel == 3'b100) ? ({2'h0, IR_R2, 2'h0}) :
+                    (sel == 3'b101) ? ({2'h0, IR_L2, 2'h0}) :
+                    (sel == 3'b110) ? ({1'h0, IR_R3, 3'h0}) : ({1'h0, IR_L3, 3'h0});
     
     // wire [15:0] signedSelIR;
     // wire [15:0] subVec;
