@@ -1,0 +1,527 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/jackz/Desktop/ECE 551/Ex20.5
+vA2D_intf
+Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z1 !s110 1607358322
+!i10b 1
+!s100 Ae:]7fk_Dl5H9F:f`]Pme0
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IRIYi?62caCa[nJT>zjmMY3
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+S1
+Z4 dC:/Users/jackz/Desktop/551-final-project
+Z5 w1607099915
+8C:/Users/jackz/Desktop/551-final-project/A2D_intf.sv
+FC:/Users/jackz/Desktop/551-final-project/A2D_intf.sv
+!i122 0
+L0 1 84
+Z6 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z7 !s108 1607358322.000000
+!s107 C:/Users/jackz/Desktop/551-final-project/A2D_intf.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/A2D_intf.sv|
+!i113 1
+Z8 o-work work -sv
+Z9 tCvgOpt 0
+n@a2@d_intf
+vcmd_proc
+R0
+R1
+!i10b 1
+!s100 6T_4K<8;z1][RT?J?KT4;3
+R2
+Ik]6DDSf1jfAP6?j>L=z7Z3
+R3
+S1
+R4
+Z10 w1607356737
+8C:/Users/jackz/Desktop/551-final-project/cmd_proc.sv
+FC:/Users/jackz/Desktop/551-final-project/cmd_proc.sv
+!i122 1
+L0 1 206
+R6
+r1
+!s85 0
+31
+R7
+!s107 C:/Users/jackz/Desktop/551-final-project/cmd_proc.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/cmd_proc.sv|
+!i113 1
+R8
+R9
+vCommMaster
+R0
+R1
+!i10b 1
+!s100 mSoVN]][Q96mz1ZDHoIz30
+R2
+I_H3A=JMhCLmW:B:6dW8GA0
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/CommMaster.sv
+FC:/Users/jackz/Desktop/551-final-project/CommMaster.sv
+!i122 2
+L0 1 67
+R6
+r1
+!s85 0
+31
+R7
+!s107 C:/Users/jackz/Desktop/551-final-project/CommMaster.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/CommMaster.sv|
+!i113 1
+R8
+R9
+n@comm@master
+verr_compute
+R0
+R1
+!i10b 1
+!s100 YGL][BLJcdBfb41UI;5BB0
+R2
+I`DmF6NXZ51goRdQ3<;7[^0
+R3
+S1
+R4
+w1607357809
+8C:/Users/jackz/Desktop/551-final-project/err_compute.sv
+FC:/Users/jackz/Desktop/551-final-project/err_compute.sv
+!i122 3
+L0 1 33
+R6
+r1
+!s85 0
+31
+R7
+!s107 C:/Users/jackz/Desktop/551-final-project/err_compute.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/err_compute.sv|
+!i113 1
+R8
+R9
+verr_compute_DP
+R0
+R1
+!i10b 1
+!s100 lY6E;<3fNckDXoOkM5?D]3
+R2
+IJ>15O?W>NTXR2FDcTIG^a3
+R3
+S1
+R4
+w1607357733
+8C:/Users/jackz/Desktop/551-final-project/err_compute_DP.sv
+FC:/Users/jackz/Desktop/551-final-project/err_compute_DP.sv
+!i122 4
+L0 1 42
+R6
+r1
+!s85 0
+31
+R7
+!s107 C:/Users/jackz/Desktop/551-final-project/err_compute_DP.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/err_compute_DP.sv|
+!i113 1
+R8
+R9
+nerr_compute_@d@p
+verr_compute_SM
+R0
+Z11 !s110 1607358323
+!i10b 1
+!s100 9VkF?O;BH9HDVF6cAGRo51
+R2
+ICmC]`1[W4XlzY;7ToIIOM1
+R3
+S1
+R4
+w1603141852
+8C:/Users/jackz/Desktop/551-final-project/err_compute_SM.sv
+FC:/Users/jackz/Desktop/551-final-project/err_compute_SM.sv
+!i122 5
+L0 1 55
+R6
+r1
+!s85 0
+31
+Z12 !s108 1607358323.000000
+!s107 C:/Users/jackz/Desktop/551-final-project/err_compute_SM.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/err_compute_SM.sv|
+!i113 1
+R8
+R9
+nerr_compute_@s@m
+vinverse_PWM11e
+R0
+R11
+!i10b 1
+!s100 H75lWf:[]0KoV_L:e@nSb1
+R2
+Ia30zF2<jmfdLK]J=0E[V01
+R3
+S1
+R4
+R10
+Z13 8C:/Users/jackz/Desktop/551-final-project/MazePhysics.sv
+Z14 FC:/Users/jackz/Desktop/551-final-project/MazePhysics.sv
+!i122 7
+L0 189 49
+R6
+r1
+!s85 0
+31
+R12
+Z15 !s107 C:/Users/jackz/Desktop/551-final-project/MazePhysics.sv|
+Z16 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/MazePhysics.sv|
+!i113 1
+R8
+R9
+ninverse_@p@w@m11e
+vIR_intf
+R0
+R11
+!i10b 1
+!s100 8kQ>1:[aAad<gm09<0I`=3
+R2
+IOQYD6EYF>NOIT6T_:j2DC2
+R3
+S1
+R4
+R5
+8C:/Users/jackz/Desktop/551-final-project/IR_intf.sv
+FC:/Users/jackz/Desktop/551-final-project/IR_intf.sv
+!i122 6
+L0 1 188
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/IR_intf.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/IR_intf.sv|
+!i113 1
+R8
+R9
+n@i@r_intf
+vMazePhysics
+R0
+R11
+!i10b 1
+!s100 IP1<OkGioTnBJXMIP1NP13
+R2
+IjDT2iYG2>h397;BTL=<Rl3
+R3
+S1
+R4
+R10
+R13
+R14
+!i122 7
+L0 1 184
+R6
+r1
+!s85 0
+31
+R12
+R15
+R16
+!i113 1
+R8
+R9
+n@maze@physics
+vMazeRunner
+R0
+R11
+!i10b 1
+!s100 L<:glI6AnZn1LVnYgVbnM0
+R2
+IKB0n8l]V:K0DAzQ3[lDA;1
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/MazeRunner.sv
+FC:/Users/jackz/Desktop/551-final-project/MazeRunner.sv
+!i122 8
+L0 1 93
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/MazeRunner.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/MazeRunner.sv|
+!i113 1
+R8
+R9
+n@maze@runner
+vMazeRunner_tb
+R0
+R11
+!i10b 1
+!s100 nHH0@n9ncKd8;Z4DN]bKo2
+R2
+Ik@n]?3[K3XBM;@HaVHA5d0
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/MazeRunner_tb.sv
+FC:/Users/jackz/Desktop/551-final-project/MazeRunner_tb.sv
+!i122 9
+L0 2 647
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/MazeRunner_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/MazeRunner_tb.sv|
+!i113 1
+R8
+R9
+n@maze@runner_tb
+vmtr_drv
+R0
+R11
+!i10b 1
+!s100 2VCCA@7`cQnNz85damcQA0
+R2
+Ib@0k@]fKlWl@nO90Ma9`R2
+R3
+S1
+R4
+R5
+8C:/Users/jackz/Desktop/551-final-project/mtr_drv.sv
+FC:/Users/jackz/Desktop/551-final-project/mtr_drv.sv
+!i122 10
+Z17 L0 1 22
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/mtr_drv.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/mtr_drv.sv|
+!i113 1
+R8
+R9
+vPID
+R0
+R11
+!i10b 1
+!s100 99bn6;P0CRWV;zNa7L=f]2
+R2
+Ic8AYzM2PngW:lNm=`I<2]2
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/PID.sv
+FC:/Users/jackz/Desktop/551-final-project/PID.sv
+!i122 11
+L0 9 174
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/PID.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/PID.sv|
+!i113 1
+R8
+R9
+n@p@i@d
+vPWM11
+R0
+R11
+!i10b 1
+!s100 E4LY>fXHgiWUPRII4_7f93
+R2
+IRlkT3FM;icNMgGf@g3JPa3
+R3
+S1
+R4
+R5
+8C:/Users/jackz/Desktop/551-final-project/PWM11.sv
+FC:/Users/jackz/Desktop/551-final-project/PWM11.sv
+!i122 12
+R17
+R6
+r1
+!s85 0
+31
+R12
+!s107 C:/Users/jackz/Desktop/551-final-project/PWM11.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/PWM11.sv|
+!i113 1
+R8
+R9
+n@p@w@m11
+vrst_synch
+R0
+Z18 !s110 1607358324
+!i10b 1
+!s100 zJ;EfZA?`KZUaF2C71:AZ0
+R2
+I?5VIF:Qd]iRJUmz@[<7ZL0
+R3
+S1
+R4
+R5
+8C:/Users/jackz/Desktop/551-final-project/rst_synch.sv
+FC:/Users/jackz/Desktop/551-final-project/rst_synch.sv
+!i122 13
+L0 1 20
+R6
+r1
+!s85 0
+31
+Z19 !s108 1607358324.000000
+!s107 C:/Users/jackz/Desktop/551-final-project/rst_synch.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/rst_synch.sv|
+!i113 1
+R8
+R9
+vSPI_ADC128S
+R0
+R18
+!i10b 1
+!s100 93oj0i;UV@::cHMPGHMJ>1
+R2
+I`jg5YCz]m70K;K:@RYj4z1
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/SPI_ADC128S.sv
+FC:/Users/jackz/Desktop/551-final-project/SPI_ADC128S.sv
+!i122 14
+L0 1 140
+R6
+r1
+!s85 0
+31
+R19
+!s107 C:/Users/jackz/Desktop/551-final-project/SPI_ADC128S.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/SPI_ADC128S.sv|
+!i113 1
+R8
+R9
+n@s@p@i_@a@d@c128@s
+vSPI_mstr16
+R0
+R18
+!i10b 1
+!s100 L04TnX`ojl7;F;<0If^Cl0
+R2
+I5ZQJ7KlT9T4f`geeaYk;01
+R3
+S1
+R4
+R5
+8C:/Users/jackz/Desktop/551-final-project/SPI_mstr16.sv
+FC:/Users/jackz/Desktop/551-final-project/SPI_mstr16.sv
+!i122 15
+L0 1 128
+R6
+r1
+!s85 0
+31
+R19
+!s107 C:/Users/jackz/Desktop/551-final-project/SPI_mstr16.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/SPI_mstr16.sv|
+!i113 1
+R8
+R9
+n@s@p@i_mstr16
+vUART_rcv
+R0
+R18
+!i10b 1
+!s100 A:X2gTYGD;@<RPUFJDU`L3
+R2
+IKZmZbJoe=XGn<VZ@>a^m60
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/UART_rcv.sv
+FC:/Users/jackz/Desktop/551-final-project/UART_rcv.sv
+!i122 16
+L0 1 102
+R6
+r1
+!s85 0
+31
+R19
+!s107 C:/Users/jackz/Desktop/551-final-project/UART_rcv.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/UART_rcv.sv|
+!i113 1
+R8
+R9
+n@u@a@r@t_rcv
+vUART_tx
+R0
+R18
+!i10b 1
+!s100 FKG<LXfImVWdlXS;XIfC00
+R2
+IKDa:gmaYYEjmng=RkhdCN1
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/UART_tx.sv
+FC:/Users/jackz/Desktop/551-final-project/UART_tx.sv
+!i122 17
+L0 1 98
+R6
+r1
+!s85 0
+31
+R19
+!s107 C:/Users/jackz/Desktop/551-final-project/UART_tx.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/UART_tx.sv|
+!i113 1
+R8
+R9
+n@u@a@r@t_tx
+vUART_wrapper
+R0
+R18
+!i10b 1
+!s100 ;FL_AXdaA13m`PeYlPiL=3
+R2
+I`4jO6>ZX0zo?=K=gOI`^`1
+R3
+S1
+R4
+R10
+8C:/Users/jackz/Desktop/551-final-project/UART_wrapper.sv
+FC:/Users/jackz/Desktop/551-final-project/UART_wrapper.sv
+!i122 18
+L0 1 66
+R6
+r1
+!s85 0
+31
+R19
+!s107 C:/Users/jackz/Desktop/551-final-project/UART_wrapper.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/jackz/Desktop/551-final-project/UART_wrapper.sv|
+!i113 1
+R8
+R9
+n@u@a@r@t_wrapper
