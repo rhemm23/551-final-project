@@ -3258,7 +3258,7 @@ module MazeRunner ( clk, RST_n, SS_n, MOSI, MISO, SCLK, PWMR, PWML, DIRR, DIRL,
   AND2X1_RVT U2571 ( .A1(n1494), .A2(\iDRV/rght_PWM/cnt [7]), .Y(n1746) );
   XOR2X1_RVT U2572 ( .A1(\iDRV/rght_PWM/cnt [8]), .A2(n1746), .Y(
         \iDRV/rght_PWM/N9 ) );
-  OR2X1_RVT U2573 ( .A1(n1747), .A2(\iDRV/rght_PWM/n1
+  OR2X1_RVT U2573 ( .A1(n1747), .A2(\iDRV/rght_PWM/n16 ), .Y(net40112) );
   AND2X1_RVT U2574 ( .A1(net40111), .A2(net40082), .Y(n1752) );
   OR2X1_RVT U2575 ( .A1(n1429), .A2(n1748), .Y(n1758) );
   AO21X1_RVT U2576 ( .A1(n1749), .A2(net40082), .A3(n1163), .Y(n1757) );
