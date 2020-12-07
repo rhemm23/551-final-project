@@ -33,9 +33,9 @@ set_clock_uncertainty -setup 0.15 clk
 set_clock_uncertainty -hold 0.15 clk
 
 # Compile, flatten, then recompile
-compile -map_effort medium
+compile -map_effort high
 ungroup -all -flatten
-compile -map_effort medium
+compile -map_effort high
 
 # Timing reports
 report_timing -delay max > max_delay.rpt
