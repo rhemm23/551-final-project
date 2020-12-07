@@ -108,3 +108,5 @@ run -all
 # 
 # MazeRunner (t=115000115): STOPPED
 # PASSED: MazeRunner still obstructed
+# End time: 14:42:41 on Dec 07,2020, Elapsed time: 2:37:11
+# Errors: 0, Warnings: 6
