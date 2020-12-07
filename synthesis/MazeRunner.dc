@@ -1,5 +1,5 @@
 # Read in verilog code
-read_file -format sverilog { rst_synch.sv, PWM11.sv, mtr_drv.sv, err_compute_DP.sv, err_compute_SM.sv, err_compute.sv, SPI_mstr16.sv, PID.sv, A2D_intf.sv, IR_intf.sv, cmd_proc.sv, MazeRunner.sv }
+read_file -format sverilog { rst_synch.sv, PWM11.sv, mtr_drv.sv, err_compute_DP.sv, err_compute_SM.sv, err_compute.sv, SPI_mstr16.sv, PID.sv, A2D_intf.sv, IR_intf.sv, cmd_proc.sv, MazeRunner.sv, UART_wrapper.sv, UART_rcv.sv }
 
 # Set the current design
 set current_design MazeRunner
