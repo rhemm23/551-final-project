@@ -10,9 +10,9 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 
 	parameter FAST_SIM = 0;      // Set to 1 to ramp up forward speed 8x faster (useful in ModelSim)
 
-	localparam P_coeff = 7'h06;  // Coefficient for Proportional term of PID
-	localparam I_coeff = 7'h00;  // Coefficient for Integral term of PID
-	localparam D_coeff = 7'h26;  // Coefficient for Derivative term of PID
+	localparam P_coeff = 7'h06;  // Coefficient for Proportional term of PID 1/6
+	localparam I_coeff = 7'h00;  // Coefficient for Integral term of PID 1/2
+	localparam D_coeff = 7'h30;  // Coefficient for Derivative term of PID 26
 
 	output [11:0] lft_speed;     // Left motor speed
 	output [11:0] rght_speed;    // Right motor speed

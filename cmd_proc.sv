@@ -104,7 +104,7 @@ always_comb begin
 	
 	REGULAR_VEER : begin
 		go = 1;
-		if(cmd[0]) 
+		if(cmd_shft_reg[0]) 
 			err_opn_lp = 16'h340;
 		else
 			err_opn_lp = -16'h340;
@@ -124,7 +124,6 @@ always_comb begin
 			end else begin 
 				go = 1;
 				rst_tmr = 1;
-				$display("%b", REV_tmr1);
 				next_state = ASSERT_ERR_OPN_LP_2;
 			end 
 		end else begin 
@@ -168,10 +167,11 @@ always_comb begin
 			next_state = RST_ERR_OPN_LP;
 	end 
 	
-	BUZZ_100MS : begin 
+	BUZZ_100MS : begin
+		buzz = 1;
 		if(BMP_DBNC_tmr) begin 
 			if(BMPL_n && BMPR_n) begin 
-				buzz = !buzz;
+				buzz = 0;
 				next_state = READY;
 			end else begin 
 				next_state = BUZZ;
@@ -180,9 +180,10 @@ always_comb begin
 			next_state = BUZZ_100MS;
 	end 
 	
-	BUZZ : begin 
+	BUZZ : begin
+		buzz = 1;
 		if(BMPL_n && BMPR_n) begin 
-			buzz = !buzz;
+			buzz = 0;
 			next_state = READY;
 		end else begin 
 			next_state = BUZZ;
