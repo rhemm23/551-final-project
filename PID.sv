@@ -11,8 +11,8 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	parameter FAST_SIM = 0;      // Set to 1 to ramp up forward speed 8x faster (useful in ModelSim)
 
 	localparam P_coeff = 7'h06;  // Coefficient for Proportional term of PID 1/6
-	localparam I_coeff = 7'h00;  // Coefficient for Integral term of PID 1/2
-	localparam D_coeff = 7'h30;  // Coefficient for Derivative term of PID 26
+	localparam I_coeff = 7'h01;  // Coefficient for Integral term of PID 1/2
+	localparam D_coeff = 7'h38;  // Coefficient for Derivative term of PID 26
 
 	output [11:0] lft_speed;     // Left motor speed
 	output [11:0] rght_speed;    // Right motor speed
@@ -80,8 +80,8 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 
 	// Saturate error to 11 bits. If error is negative and more negative than a 11 bit value, saturate it. If error is positive and larger than a 11 bit value, saturate it.
 	//assign err_sat = error[15] ? (error[13:10] == 0 ? 11'b10000000000 : error[10:0]) : (error[13:10] == 0 ? error[10:0] : 11'b01111111111);
-	assign err_sat = (!error[15] && |error[14:10]) ? 16'h7fff :
-						(error[15] && ~&error[14:10]) ? 16'h8000 :
+	assign err_sat = (!error[15] && |error[14:10]) ? 11'h3ff :
+						(error[15] && ~&error[14:10]) ? 11'h400 :
 						error[10:0];
 	assign P_term = $signed(P_coeff)*err_sat; // Scale error by PID's P coefficient
 
