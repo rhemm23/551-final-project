@@ -5,6 +5,8 @@
 // Sai Chityala, Mason Berres                //
 ///////////////////////////////////////////////
 
+/// Need to add pipeline for err_sat and err_vld
+
 
 module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk, rst_n);
 
