@@ -12,6 +12,8 @@ logic [15:0] cmd_shft_reg;
 logic [25:0] tmr;
 logic REV_tmr1, REV_tmr2, BMP_DBNC_tmr;
 logic shft;
+logic en_buzz;
+logic [14:0] buzz_cntr;
 
 parameter FAST_SIM = 0;
 
@@ -25,6 +27,14 @@ always_ff @(posedge clk)begin
 	end 
 end 
 assign cmd_reg[1:0] = cmd_shft_reg[1:0];
+
+always_ff@(posedge clk, negedge rst_n) begin 
+	if(!rst_n)
+		buzz_cntr <= 15'b000000000000000;
+	else if(en_buzz)
+		buzz_cntr <= buzz_cntr + 1;
+end 
+assign buzz = buzz_cntr[14];
 
 always_ff @(posedge clk, negedge rst_n) begin 
 	if(!rst_n)
@@ -61,7 +71,7 @@ always_comb begin
 	err_opn_lp = 0;
 	go = 0;
 	rst_tmr = 0;
-	buzz = 0;
+	en_buzz = 0;
 	
 	case (state) 
 	
@@ -80,7 +90,7 @@ always_comb begin
 			if(!BMPL_n || !BMPR_n) begin 
 				go = 0;
 				rst_tmr = 1;
-				buzz = 1;
+				en_buzz = 1;
 				next_state = BUZZ_100MS;
 				if(BMPL_n && BMPR_n)
 					next_state = READY;
@@ -111,7 +121,9 @@ always_comb begin
 		end else begin
 			err_opn_lp = -16'h340;
 			next_state = REGULAR_VEER;
-		end if(line_present) begin 
+		end 
+		
+		if(line_present) begin 
 			nxt_cmd = 1;
 			next_state = READY;
 		end else
@@ -175,10 +187,10 @@ always_comb begin
 	end 
 	
 	BUZZ_100MS : begin
-		buzz = 1;
+		en_buzz = 1;
 		if(BMP_DBNC_tmr) begin 
 			if(BMPL_n && BMPR_n) begin 
-				buzz = 0;
+				en_buzz = 0;
 				next_state = READY;
 			end else begin 
 				next_state = BUZZ;
@@ -188,9 +200,9 @@ always_comb begin
 	end 
 	
 	BUZZ : begin
-		buzz = 1;
+		en_buzz = 1;
 		if(BMPL_n && BMPR_n) begin 
-			buzz = 0;
+			en_buzz = 0;
 			next_state = READY;
 		end else begin 
 			next_state = BUZZ;
