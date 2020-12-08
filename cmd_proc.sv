@@ -29,7 +29,7 @@ always_ff @(posedge clk, negedge rst_n)begin
 end 
 assign cmd_reg[1:0] = cmd_shft_reg[1:0];
 
-always_ff(@posedge clk, negedge rst_n) begin 
+always_ff@(posedge clk, negedge rst_n) begin 
 	if(!rst_n)
 		buzz_cntr <= 1'b0;
 	else if(en_buzz)
