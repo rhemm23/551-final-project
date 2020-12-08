@@ -18,8 +18,10 @@ parameter FAST_SIM = 0;
 
 UART_wrapper UART(.cmd(cmd), .cmd_rdy(cmd_rdy), .clr_cmd_rdy(cap_cmd), .RX(RX), .clk(clk), .rst_n(rst_n));
 
-always_ff @(posedge clk)begin 
-	if(cap_cmd) begin 
+always_ff @(posedge clk, negedge rst_n)begin 
+	if(!rst_n) 
+		cmd_shft_reg = 16'h0000;
+	else if(cap_cmd) begin 
 		cmd_shft_reg[15:0] = cmd[15:0];
 	end else if(shft) begin 
 		cmd_shft_reg[15:0] = {2'b0 , cmd_shft_reg[15:2]}; 
@@ -42,10 +44,10 @@ always_ff @(posedge clk, negedge rst_n) begin
 		last_veer_right = cmd_reg[0];
 end 
 
-always_ff @(posedge clk) begin
-	//if(!rst_n)
-		//tmr = 0;
-	if(rst_tmr)
+always_ff @(posedge clk, negedge rst_n) begin
+	if(!rst_n)
+		tmr = 0;
+	else if(rst_tmr)
 		tmr = 0;
 	else
 		tmr = tmr + 1;
