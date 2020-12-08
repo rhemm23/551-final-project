@@ -72,8 +72,8 @@ module MazeRunner_tb();
 		
 		//test_follow_lines();
 		//test_gap_veer();
-		//test_gap_turn_around1();
-		test_obstructions();
+		test_gap_turn_around1();
+		//test_obstructions();
 		
 		$display("YAHOO! All tests passed!");
 		$stop;
@@ -165,7 +165,7 @@ module MazeRunner_tb();
 		start_test();
 		
 		add_line(13'sd150);
-		for(int i = 0; i < 4; i++) begin
+		for(int i = 0; i < 5; i++) begin
 			@(posedge done_validating_maneuver);
 			@(posedge done_validating_maneuver);
 			add_gap();
@@ -511,7 +511,13 @@ module MazeRunner_tb();
 			$display("ERROR: Veer command must preceed turn around");
 			$stop;
 		end
-		state = RESET;
+		RST_n = 0;
+		@(posedge clk);
+		@(negedge clk);
+		RST_n = 1;
+		BMPL_n = 1;
+		BMPR_n = 1;
+		state = STOPPED;
 		repeat(4) @(posedge clk);
 		cmd = travel_plan;
 		send_cmd = 1;
