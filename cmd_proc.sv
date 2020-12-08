@@ -12,30 +12,19 @@ logic [15:0] cmd_shft_reg;
 logic [25:0] tmr;
 logic REV_tmr1, REV_tmr2, BMP_DBNC_tmr;
 logic shft;
-logic en_buzz;
-logic [14:0] buzz_cntr;
+
 parameter FAST_SIM = 0;
 
 UART_wrapper UART(.cmd(cmd), .cmd_rdy(cmd_rdy), .clr_cmd_rdy(cap_cmd), .RX(RX), .clk(clk), .rst_n(rst_n));
 
-always_ff @(posedge clk, negedge rst_n)begin 
-	if(!rst_n) 
-		cmd_shft_reg = 16'h0000;
-	else if(cap_cmd) begin 
+always_ff @(posedge clk)begin 
+	if(cap_cmd) begin 
 		cmd_shft_reg[15:0] = cmd[15:0];
 	end else if(shft) begin 
 		cmd_shft_reg[15:0] = {2'b0 , cmd_shft_reg[15:2]}; 
 	end 
 end 
 assign cmd_reg[1:0] = cmd_shft_reg[1:0];
-
-always_ff@(posedge clk, negedge rst_n) begin 
-	if(!rst_n)
-		buzz_cntr <= 1'b0;
-	else if(en_buzz)
-		buzz_cntr <= buzz_cntr + 1;
-end 
-assign buzz = buzz_cntr[14];
 
 always_ff @(posedge clk, negedge rst_n) begin 
 	if(!rst_n)
@@ -44,10 +33,10 @@ always_ff @(posedge clk, negedge rst_n) begin
 		last_veer_right = cmd_reg[0];
 end 
 
-always_ff @(posedge clk, negedge rst_n) begin
-	if(!rst_n)
-		tmr = 0;
-	else if(rst_tmr)
+always_ff @(posedge clk) begin
+	//if(!rst_n)
+		//tmr = 0;
+	if(rst_tmr)
 		tmr = 0;
 	else
 		tmr = tmr + 1;
@@ -72,7 +61,7 @@ always_comb begin
 	err_opn_lp = 0;
 	go = 0;
 	rst_tmr = 0;
-	en_buzz = 0;
+	buzz = 0;
 	
 	case (state) 
 	
@@ -91,7 +80,7 @@ always_comb begin
 			if(!BMPL_n || !BMPR_n) begin 
 				go = 0;
 				rst_tmr = 1;
-				en_buzz = 1;
+				buzz = 1;
 				next_state = BUZZ_100MS;
 				if(BMPL_n && BMPR_n)
 					next_state = READY;
@@ -116,11 +105,13 @@ always_comb begin
 	
 	REGULAR_VEER : begin
 		go = 1;
-		if(cmd_shft_reg[0]) 
+		if(cmd_shft_reg[0]) begin
 			err_opn_lp = 16'h340;
-		else
+			next_state = REGULAR_VEER;
+		end else begin
 			err_opn_lp = -16'h340;
-		if(line_present) begin 
+			next_state = REGULAR_VEER;
+		end if(line_present) begin 
 			nxt_cmd = 1;
 			next_state = READY;
 		end else
@@ -133,6 +124,7 @@ always_comb begin
 			//rst_tmr = 1;
 			if(!REV_tmr1) begin 
 				err_opn_lp = -16'h1E0;
+				next_state = ASSERT_ERR_OPN_LP_1;
 			end else begin 
 				go = 1;
 				rst_tmr = 1;
@@ -142,6 +134,7 @@ always_comb begin
 			//rst_tmr = 1;
 			if(!REV_tmr1) begin 
 				err_opn_lp = 16'h1E0;
+				next_state = ASSERT_ERR_OPN_LP_1;
 			end else begin 
 				go = 1;
 				rst_tmr = 1;
@@ -156,6 +149,7 @@ always_comb begin
 			//rst_tmr = 1;
 			if(!REV_tmr2) begin 
 				err_opn_lp = 16'h380;
+				next_state = ASSERT_ERR_OPN_LP_2;
 			end else begin 
 				next_state = RST_ERR_OPN_LP;
 			end 
@@ -163,6 +157,7 @@ always_comb begin
 			//rst_tmr = 1;
 			if(!REV_tmr2) begin 
 				err_opn_lp = -16'h380;
+				next_state = ASSERT_ERR_OPN_LP_2;
 			end else begin 
 				next_state = RST_ERR_OPN_LP;
 			end 
@@ -180,10 +175,10 @@ always_comb begin
 	end 
 	
 	BUZZ_100MS : begin
-		en_buzz = 1;
+		buzz = 1;
 		if(BMP_DBNC_tmr) begin 
 			if(BMPL_n && BMPR_n) begin 
-				en_buzz = 0;
+				buzz = 0;
 				next_state = READY;
 			end else begin 
 				next_state = BUZZ;
@@ -193,9 +188,9 @@ always_comb begin
 	end 
 	
 	BUZZ : begin
-		en_buzz = 1;
+		buzz = 1;
 		if(BMPL_n && BMPR_n) begin 
-			en_buzz = 0;
+			buzz = 0;
 			next_state = READY;
 		end else begin 
 			next_state = BUZZ;
