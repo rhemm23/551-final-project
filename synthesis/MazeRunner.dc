@@ -37,6 +37,11 @@ compile -map_effort high
 ungroup -all -flatten
 compile -map_effort high
 
+# set fix hold time and recompile
+set_clock_uncertainty 0.15 clk
+set_fix_hold clk
+compile -map_effort hign
+
 # Timing reports
 report_timing -delay max > max_delay.rpt
 report_timing -delay min > min_delay.rpt
