@@ -70,10 +70,10 @@ module MazeRunner_tb();
 		// Display which state the MazeRunner is in to better understand what's happening
 		$monitor("\nMazeRunner (t=%0t): %0s", $time, state.name()); 
 		
-		//test_follow_lines();
-		//test_gap_veer();
+		test_follow_lines();
+		test_gap_veer();
 		test_gap_turn_around1();
-		//test_obstructions();
+		test_obstructions();
 		
 		$display("YAHOO! All tests passed!");
 		$stop;
@@ -528,7 +528,7 @@ module MazeRunner_tb();
 	// Begins a test by asserting go (which asserts send_cmd in the state machine)
 	task start_test();
 		go = 1;
-		repeat(4) @(posedge clk);
+		repeat(4) @(posedge clk); // changed waiting time
 		go = 0;
 	endtask
 	
