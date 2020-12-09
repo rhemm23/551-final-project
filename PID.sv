@@ -33,6 +33,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	reg signed [14:0] P_term_flopped;
 	reg signed [9:0] I_term_flopped;
 	reg signed [14:0] D_term_flopped;
+	
 	wire signed [14:0] PID;
 	
 	wire [11:0] FRWRD_sum;
@@ -56,9 +57,10 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	
 	always_ff @(posedge clk) begin
 		P_term_flopped <= P_term;
-		P_term_flopped <= I_term;
-		P_term_flopped <= D_term;
+		I_term_flopped <= I_term;  
+		D_term_flopped <= D_term;
 	end
+	
 	
 	// Forward speed incrementing flop
 	// Generate the correct incrementing flop at compile time using FAST_SIM param
