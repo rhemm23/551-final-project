@@ -93,12 +93,10 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
         line_present <= 1'b0;
     end
   
- // IR max flop
-  always_ff @(posedge clk, negedge rst_n)
-    if (!rst_n)
+  // IR max flop
+  always_ff @(posedge cnv_cmplt, posedge clr)
+    if (clr)
       IR_max <= 12'h000;
-	else if(clr)
-	  IR_max <= 12'h000;
     else if (cnv_cmplt && res > IR_max)
       IR_max <= res;
   
@@ -128,16 +126,14 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
       // IDLE : resets timer and goes to waiting state
       default : begin
         clr = 1;
-        rst_tmr = 1;
+        //rst_tmr = 1;
         next_state = WAIT_TMR;
       end
       // Wait for timer to fill before starting
       WAIT_TMR : if (nxt_round) begin
         rst_tmr = 1;
         next_state = IR_SETTLE;
-        clr = 1;
       end else begin
-      clr = 1;
         next_state = WAIT_TMR;
       end
       // Wait for IR sensor values to settle
@@ -171,6 +167,7 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
         // Increment channel, go to next appropriate state
         inc_chnnl = 1;
         if (chnnl == 3'b111) begin
+		  //rst_tmr = 1;
           IR_vld = 1;
           next_state = IDLE;
         end else begin

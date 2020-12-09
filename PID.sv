@@ -29,6 +29,10 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	reg signed [14:0] P_term;
 	reg signed [9:0] I_term;
 	reg signed [14:0] D_term;
+	
+	reg signed [14:0] P_term_flopped;
+	reg signed [9:0] I_term_flopped;
+	reg signed [14:0] D_term_flopped;
 	wire signed [14:0] PID;
 	
 	wire [11:0] FRWRD_sum;
@@ -37,7 +41,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	
 	// Sum each individual term into a PID signal
 	// Zero when go is not asserted
-	assign PID = go ? (P_term + {{5{I_term[9]}},I_term} + D_term) : 15'h0000;
+	assign PID = go ? (P_term_flopped + {{5{I_term_flopped[9]}},I_term_flopped} + D_term_flopped) : 15'h0000;
 	
 	// Combinational logic for output signals
 	assign moving = (FRWRD > 11'h080) ? 1'b1 : 1'b0; // Moving if speed is above 0x080
@@ -49,6 +53,12 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	assign FRWRD_diff = {1'b0, FRWRD} - PID[14:3];
 	assign incr_en = err_vld && ~&FRWRD[9:8]; // Only increment speed when the error is valid or we are below max speed
 	
+	
+	always_ff @(posedge clk) begin
+		P_term_flopped <= P_term;
+		P_term_flopped <= I_term;
+		P_term_flopped <= D_term;
+	end
 	
 	// Forward speed incrementing flop
 	// Generate the correct incrementing flop at compile time using FAST_SIM param
