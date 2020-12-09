@@ -48,7 +48,7 @@ end
 always_ff @(posedge clk, negedge rst_n) begin
 	if(!rst_n)
 		tmr = 0;
-	if(rst_tmr)
+	else if(rst_tmr)
 		tmr = 0;
 	else
 		tmr = tmr + 1;
