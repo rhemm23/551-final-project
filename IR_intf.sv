@@ -128,7 +128,7 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
       // IDLE : resets timer and goes to waiting state
       default : begin
         clr = 1;
-        rst_tmr = 1;
+        //rst_tmr = 1;
         next_state = WAIT_TMR;
       end
       // Wait for timer to fill before starting
@@ -171,7 +171,7 @@ module IR_intf(clk, rst_n, IR_R0, IR_R1, IR_R2, IR_R3, IR_L0, IR_L1, IR_L2, IR_L
         // Increment channel, go to next appropriate state
         inc_chnnl = 1;
         if (chnnl == 3'b111) begin
-		      rst_tmr = 1;
+		  //rst_tmr = 1;
           IR_vld = 1;
           next_state = IDLE;
         end else begin
