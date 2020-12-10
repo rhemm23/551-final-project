@@ -57,8 +57,10 @@ always_comb begin
 end
 
 // SR Flop to control cmd_rdy to prevent it from glitching
-always_ff @(posedge clk)
-	if(clr_cmd_rdy)
+always_ff @(posedge clk, negedge rst_n)
+	if(!rst_n)
+		cmd_rdy <= 0;
+	else if(clr_cmd_rdy)
 		cmd_rdy <= 0;
 	else if(set_cmd_rdy)
 		cmd_rdy <= 1;

@@ -31,7 +31,7 @@ module err_compute_DP(clk,en_accum,clr_accum,sub,sel,IR_R0,IR_R1,IR_R2,IR_R3,
 	//assign selected_IR_comp = (selected_IR ^ sub) + sub; // produces really wrong answer don't know why
 	
 	// Adder
-	wire [15:0] next_error;
+	wire signed [15:0] next_error;
 	assign next_error = error + selected_IR_comp;
   
   //////////////////////////////////

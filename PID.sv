@@ -11,7 +11,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	parameter FAST_SIM = 0;      // Set to 1 to ramp up forward speed 8x faster (useful in ModelSim)
 
 	localparam P_coeff = 7'h06;  // Coefficient for Proportional term of PID 1/6
-	localparam I_coeff = 7'h00;  // Coefficient for Integral term of PID 1/2
+	localparam I_coeff = 7'h01;  // Coefficient for Integral term of PID 1/2
 	localparam D_coeff = 7'h38;  // Coefficient for Derivative term of PID 26
 
 	output [11:0] lft_speed;     // Left motor speed
@@ -55,8 +55,6 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	assign incr_en = err_vld && ~&FRWRD[9:8]; // Only increment speed when the error is valid or we are below max speed
 	
 	
-	// Add pipelining flop to PID
-	// to break up critical path
 	always_ff @(posedge clk) begin
 		PID_flopped <= PID;
 	end
@@ -128,9 +126,7 @@ module PID(lft_speed, rght_speed, moving, error, err_vld, go, line_present, clk,
 	assign D_diff_sat = (!D_diff[10] && |D_diff[9:7]) ? 8'h7f :
 						(D_diff[10] && ~&D_diff[9:7]) ? 8'h80 :
 						D_diff[7:0];
-	
-	// Add pipelining flop after D_diff adder to break up a critical path
-	// through the multiplier for D_term
+						
 	always_ff @(posedge clk) begin
 		D_diff_flopped <= D_diff_sat;
 	end

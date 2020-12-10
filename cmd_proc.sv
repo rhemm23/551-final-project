@@ -30,7 +30,7 @@ assign cmd_reg[1:0] = cmd_shft_reg[1:0];
 
 always_ff@(posedge clk, negedge rst_n) begin 
 	if(!rst_n)
-		buzz_cntr <= 15'b000000000000000;
+		buzz_cntr <= 15'b0000;
 	else if(en_buzz)
 		buzz_cntr <= buzz_cntr + 1;
 end 
@@ -43,16 +43,16 @@ always_ff @(posedge clk, negedge rst_n) begin
 		last_veer_right = cmd_reg[0];
 end 
 
-always_ff @(posedge clk) begin
-	//if(!rst_n)
-		//tmr = 0;
-	if(rst_tmr)
-		tmr = 0;
+always_ff @(posedge clk, negedge rst_n) begin
+	if(!rst_n)
+		tmr <= 26'h0000000;
+	else if(rst_tmr)
+		tmr <= 26'h0000000;
 	else
-		tmr = tmr + 1;
+		tmr <= tmr + 1;
 end 
 
-typedef enum reg [3:0] { IDLE, READY, CLR_GO, ASSERT_ERR_OPN_LP_1,ASSERT_ERR_OPN_LP_2, RST_ERR_OPN_LP, ASSERT_LFT_RGHT_ERR,BUZZ_100MS, BUZZ, REGULAR_VEER} state_t;
+typedef enum reg [2:0] { IDLE, READY, ASSERT_ERR_OPN_LP_1, ASSERT_ERR_OPN_LP_2, RST_ERR_OPN_LP, BUZZ_100MS, BUZZ, REGULAR_VEER} state_t;
 state_t state, next_state;
 
   // SM flop

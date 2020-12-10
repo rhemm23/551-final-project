@@ -1,22 +1,27 @@
-module PWM11(clk, rst_n, duty, PWM_sig);
+module PWM11(PWM_sig, duty, rst_n, clk);
 
-  input clk, rst_n;
-  input[10:0] duty;
-  
-  // Output signal
-  output reg PWM_sig;
-  
-  // Current count
-  reg[10:0] cnt;
+input [10:0] duty;
+input rst_n, clk;
+output logic PWM_sig;
 
-  // Increment cnt and compare, or set cnt to zero if reset
-  always_ff @(posedge clk, negedge rst_n)
-    if (!rst_n) begin
-      cnt <= 1'b0;
-      PWM_sig <= 1'b0;
-    end else begin
-      cnt <= cnt + 1;
-      PWM_sig <= cnt < duty;
-    end
+wire PWM_unflopped;
+logic [10:0] cnt;
+
+
+assign PWM_unflopped = (duty > cnt) ? 1'b1 : 1'b0;
+
+// D flip flops with async active low reset
+always_ff @(posedge clk, negedge rst_n)
+		if(!rst_n)
+			cnt <= 11'b0;
+		else
+			cnt <= cnt + 1'b1;
+			
+			
+always_ff @(posedge clk, negedge rst_n)
+		if(!rst_n)
+			PWM_sig <= 1'b0;
+		else
+			PWM_sig <= PWM_unflopped;
 
 endmodule

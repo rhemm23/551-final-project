@@ -70,12 +70,14 @@ module MazeRunner_tb();
 	initial begin
 		clk = 0;
 		
+		initialize();
+		
 		// Display which state the MazeRunner is in to better understand what's happening
 		$monitor("\nMazeRunner (t=%0t): %0s", $time, state.name()); 
 		
 		//test_follow_lines();
-		test_gap_veer();
-		test_gap_turn_around1();
+		//test_gap_veer();
+		//test_gap_turn_around1();
 		test_obstructions();
 		
 		$display("YAHOO! All tests passed!");
@@ -328,9 +330,9 @@ module MazeRunner_tb();
 				end else if(!BMPL_n || !BMPR_n) begin // Check if obstruction was added
 					obstructed = 1;
 					nxt_state = STOPPING;
-				end else if(clks_since_maneuver == 2000000) begin // Check if steady state robot direction is valid
+				end else if(clks_since_maneuver == 1000000) begin // Check if steady state robot direction is valid
 				
-					if(!is_on_line()) begin
+					if(!is_on_line() || !is_moving()) begin
 						$display("ERROR: MazeRunner not on line, line angle = %0d, robot angle = %0d", line_theta, iPHYS.theta_robot);
 						if(!DONT_STOP) $stop;
 					end else begin
@@ -507,6 +509,15 @@ module MazeRunner_tb();
 	//    TEST BUILDER TASKS
 	//
 	
+	
+	task initialize();
+		BMPL_n = 1;
+		BMPR_n = 1;
+		RST_n = 0;
+		repeat(4) @(posedge clk);
+		RST_n = 1;
+	endtask
+	
 	// Ready's the robot for a new test by resetting it to a known state
 	// and gives it a new travel plan
 	task new_test(input [15:0] travel_plan);
@@ -514,6 +525,14 @@ module MazeRunner_tb();
 			$display("ERROR: Veer command must preceed turn around");
 			$stop;
 		end
+		
+		// Force reset MazePhysics since these signals aren't tied to rst_n
+		iPHYS.omega_lft = 16'h0000;
+		iPHYS.omega_rght = 16'h0000;
+		iPHYS.theta_lft = 22'h000000;
+		iPHYS.theta_rght = 22'h000000;
+		iPHYS.theta_robot = 13'h0000;
+		
 		RST_n = 0;
 		@(posedge clk);
 		@(negedge clk);
